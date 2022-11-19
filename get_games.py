@@ -35,7 +35,7 @@ def get_games_torrent(count_games):
         driver.get(url=url)
         time.sleep(5)
         print("Сохраняю страницу со списком игр...")
-        with open("index_games.html", "w", encoding="utf-8") as file:
+        with open("sites/index_games.html", "w", encoding="utf-8") as file:
             file.write(driver.page_source)
     except Exception as ex:
         print(ex)
@@ -44,8 +44,9 @@ def get_games_torrent(count_games):
         driver.close()
         driver.quit()
 
-    with open("index_games.html", "r", encoding="utf-8") as file:
+    with open("sites/index_games.html", "r", encoding="utf-8") as file:
         page_html = file.read()
+        file.close()
     try:
         soup = BeautifulSoup(page_html, "lxml")
         src = soup.find_all("div", class_="short")
@@ -91,7 +92,7 @@ def get_games_torrent(count_games):
             driver.get(url=url)
             time.sleep(5)
             print("Сохраняю страницу {0}...".format(number + 1))
-            with open("games.html", "w", encoding="utf-8") as file:
+            with open("sites/games.html", "w", encoding="utf-8") as file:
                 file.write(driver.page_source)
             print("Страница сохранена...")
 
@@ -101,8 +102,9 @@ def get_games_torrent(count_games):
             driver.close()
             driver.quit()
 
-        with open("games.html", "r", encoding="utf-8") as file:
+        with open("sites/games.html", "r", encoding="utf-8") as file:
             page_html = file.read()
+            file.close()
         try:
             soup = BeautifulSoup(page_html, "lxml")
             text = soup.find("div", class_="full12").get_text()

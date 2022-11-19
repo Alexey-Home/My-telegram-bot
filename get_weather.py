@@ -37,7 +37,7 @@ def get_weather_gismeteo(count_days):
         driver.get(url=url)
         time.sleep(5)
         print("Сохраняю страницу гисметео...")
-        with open("index_g.html", "w", encoding="utf-8") as file:
+        with open("sites/index_g.html", "w", encoding="utf-8") as file:
             file.write(driver.page_source)
     except Exception as ex:
         print(ex)
@@ -47,8 +47,9 @@ def get_weather_gismeteo(count_days):
         driver.quit()
     print("Готово")
 
-    with open("index_g.html", "r", encoding="utf-8") as file:
+    with open("sites/index_g.html", "r", encoding="utf-8") as file:
         page_html = file.read()
+        file.close()
     try:
         print("Собираю информацию: число, погода, температура, ветер, осадки...")
         soup = BeautifulSoup(page_html, "lxml")
@@ -136,7 +137,7 @@ def get_weather_yandex(count_days):
         driver.get(url=url)
         time.sleep(5)
         print("Сохраняю страницу яндекс-погода...")
-        with open("index_y.html", "w", encoding="utf-8") as file:
+        with open("sites/index_y.html", "w", encoding="utf-8") as file:
             file.write(driver.page_source)
     except Exception as ex:
         print(ex)
@@ -146,9 +147,9 @@ def get_weather_yandex(count_days):
         driver.quit()
     print("Готово")
 
-    with open("index_y.html", "r", encoding="utf-8") as file:
+    with open("sites/index_y.html", "r", encoding="utf-8") as file:
         page_html = file.read()
-
+        file.close()
     try:
         soup = BeautifulSoup(page_html, "lxml")
         cards = soup.find_all("article", class_=re.compile("card"))
