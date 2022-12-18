@@ -84,5 +84,3 @@ def main(words, out_language):
     return translation(words, out_language)
 
 
-# if __name__ == '__main__':
-#     main(words, out_lang)

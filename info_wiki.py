@@ -56,14 +56,13 @@ def info_wiki(words):
     try:
         with open("sites/index_wiki.html", "r", encoding="utf-8") as file:
             page_html = file.read()
-            file.close()
         print("Поиск пунктов информации...")
         soup = BeautifulSoup(page_html, "lxml")
 
         if soup.find("div", class_="mw-search-results-container"):
             pass
 
-        src = soup.find("div", class_="mw-parser-output")
+        src = soup.find("div", class_="mw-body-content mw-content-ltr")
 
         text = src.find_all("p")
 
@@ -81,12 +80,8 @@ def info_wiki(words):
     except Exception as ex:
         print("что то пошло не так")
         print(ex)
-        return ex
+        return f"что то пошло не так: {ex}"
 
 
 def main(words):
     return info_wiki(words)
-
-# if __name__ == '__main__':
-#     print(main(words))
-

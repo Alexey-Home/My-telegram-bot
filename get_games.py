@@ -24,8 +24,8 @@ def get_games_torrent(count_games):
     options.add_argument("--disable-blink-features=AutomationControlled")
 
     # headless mode
-    options.add_argument("--no-sandbox")
-    options.headless = True
+    # options.add_argument("--no-sandbox")
+    # options.headless = True
 
     s = Service("chromedriver.exe")
     driver = webdriver.Chrome(service=s, options=options)

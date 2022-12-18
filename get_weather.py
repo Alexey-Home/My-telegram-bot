@@ -7,44 +7,6 @@ from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 
 
-def get_page_html(url, name_site):
-    """Функция сохраняет страницу с ссылки"""
-    options = webdriver.ChromeOptions()
-
-    # user-agent
-    options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36")
-    options.add_argument(
-        "accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/"
-        "avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-
-    # for ChromeDriver version 79.0.3945.16 or over
-    options.add_argument("--disable-blink-features=AutomationControlled")
-
-    # headless mode
-    options.add_argument("--no-sandbox")
-    options.headless = True
-
-    s = Service("chromedriver.exe")
-    driver = webdriver.Chrome(service=s, options=options)
-
-    try:
-        print(f"Открываю страницу {name_site}...")
-        driver.get(url=url)
-        time.sleep(5)
-        print(f"Сохраняю страницу {name_site}...")
-        with open("sites/index_weather.html", "w", encoding="utf-8") as file:
-            file.write(driver.page_source)
-    except Exception as ex:
-        print(ex)
-        return f"Не могу перейти на страницу {name_site}..."
-    finally:
-        driver.close()
-        driver.quit()
-    print("Готово")
-
-
 def get_weather_gismeteo(count_days):
     """
     Переходит на страницу сайта "Gismeteo". Сохраняет ее.И со страницы собирает информацию:
@@ -81,6 +43,44 @@ def get_weather_yandex(count_days):
     message = get_message(days, message, "яндекс-погода")
 
     return message
+
+
+def get_page_html(url, name_site):
+    """Функция сохраняет страницу с ссылки"""
+    options = webdriver.ChromeOptions()
+
+    # user-agent
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36")
+    options.add_argument(
+        "accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/"
+        "avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+
+    # for ChromeDriver version 79.0.3945.16 or over
+    options.add_argument("--disable-blink-features=AutomationControlled")
+
+    # headless mode
+    options.add_argument("--no-sandbox")
+    options.headless = True
+
+    s = Service("chromedriver.exe")
+    driver = webdriver.Chrome(service=s, options=options)
+
+    try:
+        print(f"Открываю страницу {name_site}...")
+        driver.get(url=url)
+        time.sleep(5)
+        print(f"Сохраняю страницу {name_site}...")
+        with open("sites/index_weather.html", "w", encoding="utf-8") as file:
+            file.write(driver.page_source)
+    except Exception as ex:
+        print(ex)
+        return f"Не могу перейти на страницу {name_site}..."
+    finally:
+        driver.close()
+        driver.quit()
+    print("Готово")
 
 
 def get_info_days_gismeteo(count_days):
