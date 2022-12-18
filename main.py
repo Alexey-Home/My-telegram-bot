@@ -16,31 +16,30 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-    start_buttons = ["/start", "/перевод", "/вики"]
+    start_buttons = ["/start", "/погода", "игры", "/перевод", "/вики"]
 
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*start_buttons)
     await message.answer("/погода - узнать погоду,\n"
                          "/игры - узнать новинки на торренте\n"
-                         "/перевод - перевести предыдущее сообщение, на другой язык", reply_markup=keyboard)
+                         "/перевод - перевести предыдущее сообщение, на другой язык\n"
+                         "/вики", reply_markup=keyboard)
 
 
 @dp.message_handler(Text)
 async def send_text(message: types.Message):
 
-    if not os.path.exists("message_user\{0}_{1}".format(message.from_user.username, message.from_user.id)):
-        with open("message_user\{0}_{1}".format(message.from_user.username, message.from_user.id),
+    if not os.path.exists(f"message_user\\{message.from_user.username}_{ message.from_user.id}"):
+        with open(f"message_user\\{message.from_user.username}_{message.from_user.id}",
                   "w", encoding="utf-8") as file:
             file.write(message.text + "\n")
     else:
-        with open("message_user\{0}_{1}".format(message.from_user.username, message.from_user.id),
+        with open(f"message_user\\{message.from_user.username}_{message.from_user.id}",
                   "a", encoding="utf-8") as file:
             file.write(message.text + "\n")
 
-
-    with open("data\commands.dat", "r") as file:
+    with open("data\\commands.dat", "r") as file:
         list_commands = file.readlines()
-        file.close()
 
         for number, command in enumerate(list_commands):
             command = command.replace("\n", "")
@@ -70,18 +69,18 @@ async def send_text(message: types.Message):
                 # перевод
                 if num == 2:
                     out_language = re.compile(command).findall(message.text.lower())[0]
-                    with open("message_user\{0}_{1}".format(message.from_user.username, message.from_user.id), "r", encoding="utf-8") as file:
-                        messages = file.readlines()
-                        file.close()
+                    with open(f"message_user\\{message.from_user.username}_{message.from_user.id}",
+                              "r", encoding="utf-8") as f:
+                        messages = f.readlines()
 
                     await message.answer("ОК, понял...")
                     await message.answer(get_translation.main(messages[-2], out_language))
 
                 # википедия
                 if num == 3:
-                    with open("message_user\{0}_{1}".format(message.from_user.username, message.from_user.id), "r", encoding="utf-8") as file:
-                        messages = file.readlines()
-                        file.close()
+                    with open(f"message_user\\{message.from_user.username}_{message.from_user.id}",
+                              "r", encoding="utf-8") as f:
+                        messages = f.readlines()
                     await message.answer("Понял, начинаю поиск...")
                     await message.answer(info_wiki.main(messages[-2]))
 
